@@ -21,27 +21,26 @@
     #### 结构特征：
          1、采用了LINE进行图结构的初始化，输出为128dim，利用pca降低至48dim，记为user_Stru
     #### 用户画像：
-         2、采用了 Concat (用户的会员等级+年龄+性别)，维度一共为104dim，记为user_fea
+         2、采用了 Concat (用户的会员等级+年龄+性别)，维度一共为64dim，记为user_fea
     #### 消费特征
-         3、主要考虑用户的消费行为，这里可以理解为用ComGCN先做了一次训练 节点不是用户-用户； 而是用户-事件，date是用的one-hot初始边特征 ,得到用户节点特征user_fea_pre  事件节点特征event_feature_pre,分别为128dim，然后降维至48dim
-         ![image](https://github.com/yanzihan1/GNN4CAAI-BDSC2023-TASK1/assets/43393547/071b006c-f3aa-4b9d-8392-038131e97a12)
+         3、主要考虑用户的消费行为，这里可以理解为用ComGCN先做了一次训练 节点不是用户-用户； 而是用户-事件，把用户和事件都看作节点，当用户在某一个事件下有过消费行为，就把该用户和该事件进行连边，date是边特征，是用的one-hot初始边特征, 所以同一个用户可以和同一个事件得到多个连边。计算得到用户节点特征user_fea_pre  事件节点特征event_feature_pre,分别为128dim，然后降维至48dim
     #### 节点特征
-    节点特征采用 Concat(user_Stru,user_fea,user_fea_pre) 一共200dim
+    节点特征采用 Concat(user_Stru,user_fea,user_fea_pre) 一共160dim
     ###  边特征
-    边特征采用 Concat(parent_event_feature(72dim),event_feature_pre) 一共200dim
+    边特征采用 Concat(parent_event_feature(72dim),event_feature_pre) 一共160dim
 
     特征归一化采用的 StandardScaler.fit_transform
 ### 其他改动
-| 消融实验 | 作用 | 
-| :-----| ----: |
-| 修改负采样，参考kdd2021 mixgcf | $\uparrow$ |
-| 单独处理冷启，概率融合 |$\uparrow$ |
-| 扩大负采样 |$\uparrow$ |
+
+   1、修改负采样，参考kdd2021 mixgcf论文 很巧妙的设计，有效
+   2、训练集中包含非常多的非连通图，而包含测试集节点的连通图部分只有一半，删除噪声会导致弱监督情况下W不具有鲁棒性，但是加上又容易造成模型坍塌，所以对不包含测试集节点的连通图做扰动，随机增删边增加弱监督鲁棒性而又不改变正确的传递信息，有效。
+
+
 
 ### 可以考虑的
-- 作者做的很粗糙 仅考虑GNN单模作为参考，很多训练优化方案比如梯度惩罚,fgm,pgd,ema,lookahead,warmup等等防止过拟合 都会更加有效。GNN跑的很慢，我在这儿就没有做进一步实验了。
-- 融合(投票，概率相加等都是有效提分的方案)
-- 做为特征方案的其中一种特征，比如放到lgb里面 我认为这才是前排大佬的方案吧
+- 做的很粗糙 仅考虑GNN单模作为参考，很多训练优化方案比如梯度惩罚,fgm,pgd,ema,lookahead,warmup等等防止过拟合 都会更加有效。GNN跑的很慢，我在这儿就都没有做进一步实验了。
+- 融合(投票，概率相加等都是有效提分的方案)，因为没时间+跑得慢也没有进一步考虑
+- 做为特征方案的其中一种特征，比如放到lgb里面 我认为这才是正确的方案吧
 
 比赛结束很高兴分享这个方案和大家一起讨论GNN的学习，有疑惑的可以发邮件:yzhcqupt@163.com，我会在这两天把代码整理好share出来
 
