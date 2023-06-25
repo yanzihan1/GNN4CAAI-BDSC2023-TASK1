@@ -1,7 +1,7 @@
 # GNN4CAAI-BDSC2023-TASK1
 ### CAAI-BDSC2023社交图谱链接预测 任务一：社交图谱小样本场景链接预测
 ### 比赛链接:https://tianchi.aliyun.com/competition/entrance/532073/introduction?spm=a2c22.12281925.0.0.7aa47137syzS2r
-### 单模复赛: 14  MRR:0.3724
+### 单模复赛: 15  MRR:0.3724
 ### 比赛思路：
 
   猜测用DeepFM DNN LGB等方案最后走融合才是前排正解，但是我平时有做一些GNN研究，所以就简单聊聊如何用GNN单模完成这类推荐任务
