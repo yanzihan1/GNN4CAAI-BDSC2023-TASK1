@@ -1,4 +1,4 @@
-# GNN4CAAI-BDSC2023-TASK1
+# 2023 CAAI-BDSC2023-TASK1  单模15方案
 ### CAAI-BDSC2023社交图谱链接预测 任务一：社交图谱小样本场景链接预测
 ### 比赛链接:https://tianchi.aliyun.com/competition/entrance/532073/introduction?spm=a2c22.12281925.0.0.7aa47137syzS2r
 ### 单模复赛: 15  MRR:0.3724
